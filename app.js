@@ -59,8 +59,8 @@ const movieDetailResponse = (objectItem) => {
   return {
     movieId: objectItem.movie_id,
     directorId: objectItem.director_id,
-    movieName: ObjectItem.movie_name,
-    leadActor: ObjectItem.lead_actor,
+    movieName: objectItem.movie_name,
+    leadActor: objectItem.lead_actor,
   };
 };
 
@@ -98,7 +98,7 @@ app.delete("/movies/:movieId/", async (request, response) => {
 //API 6
 const convertDirectorResponse = (eachObject) => {
   return {
-    directorId: eachObject.director_Id,
+    directorId: eachObject.director_id,
     directorName: eachObject.director_name,
   };
 };
@@ -123,7 +123,7 @@ app.get("/directors/:directorId/movies/", async (request, response) => {
     SELECT movie_name as movieName
     FROM movie
     WHERE director_id = ${directorId};`;
-  const directorMovieResponse = await ad.all(getDirectorMovieQuery);
+  const directorMovieResponse = await db.all(getDirectorMovieQuery);
   response.send(directorMovieResponse);
 });
 
