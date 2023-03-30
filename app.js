@@ -28,6 +28,7 @@ const initializeDBAndServer = async () => {
 
 initializeDBAndServer();
 
+// get the list of all the movies in the database (movies table)
 //API 1
 
 const convertDbObject = (eachObject) => {
@@ -45,6 +46,7 @@ app.get("/movies/", async (request, response) => {
 });
 
 //API 2
+// create a movie record in movies table in moviesData.db
 
 app.post("/movies/", async (request, response) => {
   const { directorId, movieName, leadActor } = request.body;
@@ -55,6 +57,7 @@ app.post("/movies/", async (request, response) => {
 });
 
 //API 3
+//Returns a movie based on the movie ID
 const movieDetailResponse = (objectItem) => {
   return {
     movieId: objectItem.movie_id,
@@ -72,6 +75,7 @@ app.get("/movies/:movieId/", async (request, response) => {
 });
 
 //API 4
+//Updates the details of a movie in the movie table based on the movie ID
 app.put("/movies/:movieId/", async (request, response) => {
   const { movieId } = request.params;
   const { directorId, movieName, leadActor } = request.body;
@@ -79,13 +83,15 @@ app.put("/movies/:movieId/", async (request, response) => {
     UPDATE movie
     SET director_id = ${directorId},
         movie_name = '${movieName}',
-        lead_actor = '${leadActor}',
+        lead_actor = '${leadActor}'
     WHERE movie_id = ${movieId};`;
-  await db.run(updateMovieQuery);
+  const updateMovieDetails = await db.run(updateMovieQuery);
   response.send("Movie Details Updated");
 });
 
 //API 5
+//Deletes a movie from the movie table based on the movie ID
+
 app.delete("/movies/:movieId/", async (request, response) => {
   const { movieId } = request.params;
   const deleteMovieQuery = `
@@ -96,6 +102,8 @@ app.delete("/movies/:movieId/", async (request, response) => {
 });
 
 //API 6
+//Returns a list of all directors in the director table
+
 const convertDirectorResponse = (eachObject) => {
   return {
     directorId: eachObject.director_id,
@@ -116,6 +124,7 @@ app.get("/directors/", async (request, response) => {
 });
 
 //API 7
+//Returns a list of all movie names directed by a specific director
 
 app.get("/directors/:directorId/movies/", async (request, response) => {
   const { directorId } = request.params;
